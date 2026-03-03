@@ -48,6 +48,13 @@ export default defineSchema({
     updatedAt: v.number(),
   }),
 
+  briefings: defineTable({
+    type: v.union(v.literal("morning"), v.literal("evening"), v.literal("markets")),
+    date: v.string(),
+    rawText: v.string(),
+    updatedAt: v.number(),
+  }).index("by_type", ["type"]),
+
   products: defineTable({
     name: v.string(),
     status: v.union(
