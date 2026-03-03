@@ -43,6 +43,11 @@ export default defineSchema({
     action: v.string(),
   }).index("by_project", ["project"]).index("by_timestamp", ["timestamp"]),
 
+  chronicle: defineTable({
+    content: v.string(),
+    updatedAt: v.number(),
+  }),
+
   products: defineTable({
     name: v.string(),
     status: v.union(

@@ -1,28 +1,39 @@
 import { NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { ConvexHttpClient } from 'convex/browser';
+import { api } from '../../../convex/_generated/api';
+
+const convex = new ConvexHttpClient(
+  process.env.NEXT_PUBLIC_CONVEX_URL || 'https://superb-yak-348.convex.cloud'
+);
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
   try {
-    const chroniclePath = join(process.cwd(), 'CHRONICLE.md');
-    const content = readFileSync(chroniclePath, 'utf-8');
-    
-    // Filter to last 7 days
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
-    const lines = content.split('\n');
-    const filtered = lines.filter(line => {
-      const match = line.match(/\[(\d{4}-\d{2}-\d{2})/);
-      if (!match) return true; // keep headers/non-dated lines
-      const lineDate = new Date(match[1]);
-      return lineDate >= sevenDaysAgo;
-    });
-    
-    return new NextResponse(filtered.join('\n'), {
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+    const row = await convex.query(api.chronicle.get);
+
+    if (!row) {
+      return new NextResponse('# CHRONICLE.md\n\n_No entries yet._', {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-store',
+        },
+      });
+    }
+
+    return new NextResponse(row.content, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-store',
+        'X-Chronicle-Updated': new Date(row.updatedAt).toISOString(),
+      },
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to read CHRONICLE.md' }, { status: 500 });
+    console.error('Chronicle fetch error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch chronicle from Convex' },
+      { status: 500 }
+    );
   }
 }
