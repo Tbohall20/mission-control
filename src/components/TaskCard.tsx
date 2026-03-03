@@ -10,14 +10,16 @@ type Task = {
   project: string;
   priority: "High" | "Medium" | "Low";
   status: "Todo" | "In Progress" | "Done";
+  notes?: string;
   createdAt: number;
 };
 
 type TaskCardProps = {
   task: Task;
+  onClick?: () => void;
 };
 
-export default function TaskCard({ task }: TaskCardProps) {
+export default function TaskCard({ task, onClick }: TaskCardProps) {
   const priorityColors: Record<string, string> = {
     High: "#ef4444",
     Medium: "#f59e0b",
@@ -26,11 +28,23 @@ export default function TaskCard({ task }: TaskCardProps) {
 
   return (
     <div
-      className="rounded-lg p-4 border cursor-default hover:border-gray-600 transition-colors"
+      onClick={onClick}
+      className="rounded-lg p-4 border transition-colors"
       style={{
         background: "#111111",
         borderColor: "#222222",
         borderLeft: `3px solid ${priorityColors[task.priority]}`,
+        cursor: onClick ? "pointer" : "default",
+      }}
+      onMouseEnter={(e) => {
+        if (onClick) {
+          (e.currentTarget as HTMLDivElement).style.borderColor = "#444444";
+          (e.currentTarget as HTMLDivElement).style.background = "#161616";
+        }
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLDivElement).style.borderColor = "#222222";
+        (e.currentTarget as HTMLDivElement).style.background = "#111111";
       }}
     >
       <p className="text-white text-sm font-medium leading-snug mb-3">
@@ -51,6 +65,11 @@ export default function TaskCard({ task }: TaskCardProps) {
           <StatusBadge status={task.priority} />
         </div>
       </div>
+      {task.notes && (
+        <p className="text-xs mt-2 truncate" style={{ color: "#6B7280" }}>
+          📝 {task.notes}
+        </p>
+      )}
     </div>
   );
 }

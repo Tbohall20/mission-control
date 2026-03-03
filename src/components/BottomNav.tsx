@@ -4,14 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { href: "/tasks",  label: "Tasks",  icon: "✅" },
-  { href: "/office", label: "Office", icon: "🏢" },
-  { href: "/launch", label: "Launch", icon: "🚀" },
-  { href: "/team",   label: "Team",   icon: "👥" },
-  { href: "/vault",  label: "Vault",  icon: "🗄️" },
-  { href: "/logs",   label: "Logs",   icon: "📋" },
-  { href: "/ecom",   label: "Ecom",   icon: "🛒" },
-  { href: "/memory", label: "Memory", icon: "🧠" },
+  { href: "/tasks",     label: "Tasks",     icon: "✅" },
+  { href: "/docs",      label: "Docs",      icon: "📄" },
+  { href: "/chronicle", label: "Chronicle", icon: "📜" },
+  { href: "/briefing",  label: "Briefing",  icon: "☀️" },
+  { href: "/office",    label: "Office",    icon: "🏢" },
+  { href: "/launch",    label: "Launch",    icon: "🚀" },
+  { href: "/team",      label: "Team",      icon: "👥" },
+  { href: "/vault",     label: "Vault",     icon: "🗄️" },
+  { href: "/logs",      label: "Logs",      icon: "📋" },
+  { href: "/ecom",      label: "Ecom",      icon: "🛒" },
+  { href: "/memory",    label: "Memory",    icon: "🧠" },
 ];
 
 export default function BottomNav() {

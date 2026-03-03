@@ -4,6 +4,19 @@ import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import TaskCard from "@/components/TaskCard";
+import TaskEditModal from "@/components/TaskEditModal";
+import { Id } from "../../../convex/_generated/dataModel";
+
+type Task = {
+  _id: Id<"tasks">;
+  title: string;
+  assignee: string;
+  project: string;
+  priority: "High" | "Medium" | "Low";
+  status: "Todo" | "In Progress" | "Done";
+  notes?: string;
+  createdAt: number;
+};
 
 const COLUMNS = ["Todo", "In Progress", "Done"] as const;
 
@@ -16,6 +29,8 @@ const columnColors: Record<string, string> = {
 export default function TasksPage() {
   const [selectedProject, setSelectedProject] = useState("All");
   const [activeCol, setActiveCol]             = useState<typeof COLUMNS[number]>("In Progress");
+  const [editingTask, setEditingTask]         = useState<Task | null>(null);
+
   const tasks    = useQuery(api.tasks.list, { project: selectedProject });
   const projects = useQuery(api.tasks.projects, {});
   const allProjects = ["All", ...(projects ?? [])];
@@ -30,7 +45,7 @@ export default function TasksPage() {
         <div>
           <h2 className="text-white text-lg md:text-xl font-bold">Tasks Board</h2>
           <p className="text-gray-500 text-xs mt-0.5">
-            {tasks?.length ?? 0} tasks across all columns
+            {tasks?.length ?? 0} tasks · click any card to edit
           </p>
         </div>
 
@@ -123,7 +138,13 @@ export default function TasksPage() {
                     <span className="text-gray-700 text-sm">No tasks</span>
                   </div>
                 ) : (
-                  colTasks.map((task) => <TaskCard key={task._id} task={task} />)
+                  colTasks.map((task) => (
+                    <TaskCard
+                      key={task._id}
+                      task={task as Task}
+                      onClick={() => setEditingTask(task as Task)}
+                    />
+                  ))
                 )}
               </div>
             </div>
@@ -145,9 +166,23 @@ export default function TasksPage() {
             <span className="text-gray-700 text-sm">No tasks here</span>
           </div>
         ) : (
-          getColumnTasks(activeCol).map((task) => <TaskCard key={task._id} task={task} />)
+          getColumnTasks(activeCol).map((task) => (
+            <TaskCard
+              key={task._id}
+              task={task as Task}
+              onClick={() => setEditingTask(task as Task)}
+            />
+          ))
         )}
       </div>
+
+      {/* ── Edit Modal ── */}
+      {editingTask && (
+        <TaskEditModal
+          task={editingTask}
+          onClose={() => setEditingTask(null)}
+        />
+      )}
     </div>
   );
 }
