@@ -9,6 +9,7 @@
  */
 
 import type * as agents from "../agents.js";
+import type * as chronicle from "../chronicle.js";
 import type * as logs from "../logs.js";
 import type * as memories from "../memories.js";
 import type * as products from "../products.js";
@@ -22,6 +23,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   agents: typeof agents;
+  chronicle: typeof chronicle;
   logs: typeof logs;
   memories: typeof memories;
   products: typeof products;
