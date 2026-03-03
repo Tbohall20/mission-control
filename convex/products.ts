@@ -144,6 +144,29 @@ const ALL_PRODUCTS = [
   },
 ];
 
+export const create = mutation({
+  args: {
+    name: v.string(),
+    status: v.union(v.literal("Idea"), v.literal("Building"), v.literal("Launched")),
+    pricing: v.string(),
+    valueProp: v.string(),
+    liveLink: v.optional(v.string()),
+    signups: v.number(),
+    revenue: v.number(),
+    slotsRemaining: v.optional(v.number()),
+    phase: v.union(
+      v.literal("Idea"),
+      v.literal("Building"),
+      v.literal("Soft Launch"),
+      v.literal("Live"),
+      v.literal("Scaling")
+    ),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("products", args);
+  },
+});
+
 export const resetAndReseed = mutation({
   args: {},
   handler: async (ctx) => {
