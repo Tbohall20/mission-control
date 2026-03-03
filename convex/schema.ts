@@ -12,6 +12,7 @@ export default defineSchema({
       v.literal("In Progress"),
       v.literal("Done")
     ),
+    notes: v.optional(v.string()),
     createdAt: v.number(),
   }).index("by_project", ["project"]).index("by_status", ["status"]),
 
@@ -47,6 +48,16 @@ export default defineSchema({
     content: v.string(),
     updatedAt: v.number(),
   }),
+
+  documents: defineTable({
+    title: v.string(),
+    path: v.string(),
+    project: v.string(),
+    type: v.string(),
+    content: v.string(),
+    size: v.number(),
+    updatedAt: v.number(),
+  }).index("by_project", ["project"]),
 
   briefings: defineTable({
     type: v.union(v.literal("morning"), v.literal("evening"), v.literal("markets")),

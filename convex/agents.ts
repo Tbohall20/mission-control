@@ -21,19 +21,14 @@ export const updateStatus = mutation({
     currentActivity: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const update: { status: "Active" | "Idle" | "Building"; currentActivity?: string } = {
-      status: args.status,
-    };
-    if (args.currentActivity !== undefined) {
-      update.currentActivity = args.currentActivity;
-    }
+    const update: { status: "Active" | "Idle" | "Building"; currentActivity?: string } = { status: args.status };
+    if (args.currentActivity !== undefined) update.currentActivity = args.currentActivity;
     await ctx.db.patch(args.id, update);
   },
 });
 
-// ─── Current team / agents (as of 2026-03-03) ────────────────────────────────
+// ─── Live agent status — 2026-03-03 18:45 ET ─────────────────────────────────
 const CURRENT_AGENTS = [
-  // ── COMMAND ─────────────────────────────────────────────────────────────────
   {
     name: "Axiom",
     role: "Master Agent (Command)",
@@ -45,141 +40,150 @@ const CURRENT_AGENTS = [
       "Execute Tyler's directives",
       "Consolidate all output before Tyler sees it",
     ],
-    currentActivity: "Mission Control update + daily operations",
+    currentActivity: "Mission Control rebuild + data sync — 2026-03-03",
   },
-  // ── KALSHI BOT ───────────────────────────────────────────────────────────────
   {
     name: "Kalshi Bot",
     role: "Prediction Market Trader",
     project: "Kalshi Bot",
     status: "Active" as const,
     responsibilities: [
-      "Scan Kalshi markets for edge opportunities",
-      "Run 5 trading strategies with log-normal model",
-      "Execute trades when confidence ≥ 0.6 (DRY_RUN=true currently)",
-      "Log all trade decisions to Hetzner VPS",
+      "Scan Kalshi + Polymarket for edge opportunities",
+      "Run weather_arb, crypto_arb, economic_arb, polymarket_scan strategies",
+      "Log all decisions — DRY_RUN=true until March 17 review",
+      "VPS: 178.156.136.147, systemd auto-restart",
     ],
-    currentActivity: "LIVE on Hetzner VPS 178.156.136.147, DRY_RUN=true — awaiting confidence threshold",
+    currentActivity: "LIVE on Hetzner VPS — DRY_RUN=true — paper review March 17",
   },
-  // ── CLAWDRAFT AGENTS ─────────────────────────────────────────────────────────
+  {
+    name: "Polymarket MM Bot",
+    role: "Market Maker (Paper Mode)",
+    project: "Kalshi Bot",
+    status: "Active" as const,
+    responsibilities: [
+      "Avellaneda-Stoikov spread calculation",
+      "Glosten-Milgrom adverse selection model",
+      "VPIN toxicity + GTD order management",
+      "Log paper P&L to POLYMARKET-PAPER-PNL.md",
+    ],
+    currentActivity: "LIVE on VPS — /opt/polymarket-mm/ — paper P&L logging active",
+  },
+  {
+    name: "Cross-Platform Arb Monitor",
+    role: "Arbitrage Scanner",
+    project: "Kalshi Bot",
+    status: "Active" as const,
+    responsibilities: [
+      "Compare Kalshi vs Polymarket prices on same events",
+      "Flag price gaps ≥3% with volume filter",
+      "Log to ARBITRAGE-ALERTS.md every 5 minutes",
+      "162 Kalshi markets + Polymarket gamma feed",
+    ],
+    currentActivity: "LIVE — cron */5 * * * * — scanning 162 Kalshi markets",
+  },
+  {
+    name: "OSINT Monitor",
+    role: "Geopolitical Signal Scanner",
+    project: "Kalshi Bot",
+    status: "Active" as const,
+    responsibilities: [
+      "OpenSky flight tracking in 4 conflict zones",
+      "RSS news signals from Reuters, Al Jazeera, BBC, Defense One",
+      "Cross-reference vs active Polymarket markets",
+      "Alert on edges ≥5% AND volume ≥$500K",
+    ],
+    currentActivity: "LIVE on VPS — /opt/osint-monitor/ — $500K volume filter active",
+  },
   {
     name: "ContentGen",
-    role: "Content Generator",
+    role: "Content Generator (Clawdraft)",
     project: "Clawdraft",
     status: "Active" as const,
     responsibilities: [
       "Generate X threads, newsletters, LinkedIn posts, YouTube scripts",
       "Apply customer brand voice profile to all outputs",
-      "Format and package weekly content",
+      "Format and package weekly content delivery",
       "Deliver Sunday 8pm via WhatsApp",
     ],
-    currentActivity: "LIVE — Sunday 8pm delivery active",
+    currentActivity: "LIVE — Sunday 8pm delivery active — fitness-creator running",
   },
   {
-    name: "Onboarding",
-    role: "Customer Onboarding",
+    name: "Onboarding Agent",
+    role: "Customer Onboarding (Clawdraft)",
     project: "Clawdraft",
     status: "Building" as const,
     responsibilities: [
       "Process new customer brand voice questionnaires",
-      "Build and store brand voice profiles in Convex",
+      "Build personalized AGENT_CONFIG.md + SETUP_GUIDE.md",
+      "Deliver via email within minutes of purchase",
       "Trigger ContentGen with first content brief",
-      "Send welcome sequence on completion",
     ],
-    currentActivity: "BUILT — pending first customer",
+    currentActivity: "BUILT — waiting for first customer via onboard.html",
   },
-  // ── HETERODOX NEWS BOT ───────────────────────────────────────────────────────
+  {
+    name: "n8n Automation",
+    role: "Workflow Orchestrator",
+    project: "OPS",
+    status: "Building" as const,
+    responsibilities: [
+      "4 workflow stubs: Clawdraft social, outreach, lead capture, content dist.",
+      "Connects X, LinkedIn, Reddit for social automation",
+      "Docker on Hetzner VPS port 127.0.0.1:5678",
+      "Awaiting Tyler to connect social account credentials",
+    ],
+    currentActivity: "LIVE on VPS (Docker f16bd6ebf509) — awaiting social credentials",
+  },
+  {
+    name: "Local Biz Prospector",
+    role: "Outreach Automation",
+    project: "OPS",
+    status: "Active" as const,
+    responsibilities: [
+      "OSM Overpass API scrapes FL cities for small businesses",
+      "Generates HTML preview pages for each business",
+      "Writes outreach drafts with personalization",
+      "Daily cron at 7am ET — 285 businesses found",
+    ],
+    currentActivity: "LIVE — 285 businesses found, 269 previews — pending Tyler review",
+  },
+  {
+    name: "SAM.gov Scraper",
+    role: "Contract Pipeline",
+    project: "OPS",
+    status: "Building" as const,
+    responsibilities: [
+      "Scrape SAM.gov for $500–$50K fulfillable contracts",
+      "Score by margin (55% minimum threshold)",
+      "Daily cron 6am ET on VPS",
+      "Pipeline saved to CONTRACTS-PIPELINE.md",
+    ],
+    currentActivity: "BUILT — fixture data only (SAM API key needed for live data)",
+  },
   {
     name: "Heterodox News Bot",
     role: "News Aggregator",
     project: "Heterodox News",
-    status: "Building" as const,
+    status: "Active" as const,
     responsibilities: [
-      "Aggregate news from 44 sources across left/right/center",
-      "Categorize and score articles by bias",
-      "Feed content to Heterodox News Next.js site",
-      "Update feed on scheduled intervals",
+      "Aggregate 40 RSS sources across left/right/center",
+      "30-min cache, 4s timeout per feed",
+      "Synopses via Anthropic (disabled in dev)",
+      "Deployed at heterodox-news.vercel.app",
     ],
-    currentActivity: "BUILT — pending Vercel deploy",
+    currentActivity: "LIVE at heterodox-news.vercel.app — custom domain pending",
   },
-  // ── ECOM AGENTS (PLANNED) ────────────────────────────────────────────────────
   {
     name: "Fulfillment Agent",
-    role: "Order Fulfillment",
+    role: "Order Fulfillment (Ecom)",
     project: "Ecom System",
     status: "Building" as const,
     responsibilities: [
       "Process incoming orders automatically",
-      "Route orders to CJ Dropshipping",
-      "Track fulfillment status",
-      "Handle exceptions and delays",
+      "Route to CJ Dropshipping API",
+      "Track fulfillment status and handle delays",
+      "First agent to build in ecom stack",
     ],
-    currentActivity: "PLANNED — first agent to build",
-  },
-  {
-    name: "Product Scout",
-    role: "Market Researcher",
-    project: "Ecom System",
-    status: "Building" as const,
-    responsibilities: [
-      "Scan TikTok trending products and Amazon BSR",
-      "Score products by margin and competition",
-      "Feed shortlist to Supplier agent",
-      "Archive research history",
-    ],
-    currentActivity: "PLANNED — not started",
-  },
-  {
-    name: "Store Manager",
-    role: "Listing Creator",
-    project: "Ecom System",
-    status: "Building" as const,
-    responsibilities: [
-      "Generate SEO-optimized Shopify product listings",
-      "Source and format product images",
-      "Publish listings to Shopify store",
-      "Monitor listing performance",
-    ],
-    currentActivity: "PLANNED — not started",
-  },
-  {
-    name: "Pricing Engine",
-    role: "Dynamic Pricing",
-    project: "Ecom System",
-    status: "Building" as const,
-    responsibilities: [
-      "Monitor competitor pricing in real-time",
-      "Implement dynamic repricing rules",
-      "Protect margin thresholds automatically",
-      "Alert on pricing anomalies",
-    ],
-    currentActivity: "PLANNED — not started",
-  },
-  {
-    name: "Ad Creative",
-    role: "Ads Manager",
-    project: "Ecom System",
-    status: "Building" as const,
-    responsibilities: [
-      "Generate ad copy via Claude",
-      "Create ad images via Flux/Replicate",
-      "Launch and manage ad campaigns",
-      "Monitor ROAS and scale winners",
-    ],
-    currentActivity: "PLANNED — not started",
-  },
-  {
-    name: "Ecom Support",
-    role: "Customer Service",
-    project: "Ecom System",
-    status: "Building" as const,
-    responsibilities: [
-      "Handle support tickets via Telegram",
-      "Process refunds and returns",
-      "Respond to reviews",
-      "Escalate complex issues to Tyler",
-    ],
-    currentActivity: "PLANNED — not started",
+    currentActivity: "PLANNED — not started — next in ecom build order",
   },
 ];
 
@@ -187,12 +191,9 @@ export const resetAndReseed = mutation({
   args: {},
   handler: async (ctx) => {
     const existing = await ctx.db.query("agents").collect();
-    for (const agent of existing) {
-      await ctx.db.delete(agent._id);
-    }
-    for (const agent of CURRENT_AGENTS) {
-      await ctx.db.insert("agents", agent);
-    }
+    for (const agent of existing) await ctx.db.delete(agent._id);
+    for (const agent of CURRENT_AGENTS) await ctx.db.insert("agents", agent);
+    return { count: CURRENT_AGENTS.length };
   },
 });
 
@@ -201,8 +202,6 @@ export const seed = mutation({
   handler: async (ctx) => {
     const existing = await ctx.db.query("agents").collect();
     if (existing.length > 0) return;
-    for (const agent of CURRENT_AGENTS) {
-      await ctx.db.insert("agents", agent);
-    }
+    for (const agent of CURRENT_AGENTS) await ctx.db.insert("agents", agent);
   },
 });

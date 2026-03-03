@@ -9,7 +9,9 @@
  */
 
 import type * as agents from "../agents.js";
+import type * as briefings from "../briefings.js";
 import type * as chronicle from "../chronicle.js";
+import type * as documents from "../documents.js";
 import type * as logs from "../logs.js";
 import type * as memories from "../memories.js";
 import type * as products from "../products.js";
@@ -23,7 +25,9 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   agents: typeof agents;
+  briefings: typeof briefings;
   chronicle: typeof chronicle;
+  documents: typeof documents;
   logs: typeof logs;
   memories: typeof memories;
   products: typeof products;
