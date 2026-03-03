@@ -4,7 +4,7 @@ import { join } from 'path';
 
 export async function GET() {
   try {
-    const chroniclePath = join(process.cwd(), '..', 'CHRONICLE.md');
+    const chroniclePath = join(process.cwd(), 'CHRONICLE.md');
     const content = readFileSync(chroniclePath, 'utf-8');
     
     // Filter to last 7 days
