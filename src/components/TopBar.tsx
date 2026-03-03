@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const panelNames: Record<string, string> = {
   "/tasks": "Tasks Board",
@@ -29,17 +30,24 @@ export default function TopBar() {
   const panelName = panelNames[pathname] || "Mission Control";
   const panelIcon = panelIcons[pathname] || "⚡";
 
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString("en-US", {
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setNow(new Date());
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const timeStr = now?.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
-  });
-  const dateStr = now.toLocaleDateString("en-US", {
+  }) ?? "--:-- --";
+  const dateStr = now?.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
-  });
+  }) ?? "";
 
   return (
     <header
