@@ -28,6 +28,95 @@ export const append = mutation({
   },
 });
 
+export const resetAndReseed = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const existing = await ctx.db.query("logs").collect();
+    for (const log of existing) {
+      await ctx.db.delete(log._id);
+    }
+    // Re-insert fresh logs below
+    const now = Date.now();
+    const logs = [
+      {
+        timestamp: now - 1000 * 60 * 5,
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Mission Control dashboard updated — tasks, agents, projects, and logs synced to 2026-03-03",
+      },
+      {
+        timestamp: now - 1000 * 60 * 30,
+        project: "Kalshi Bot",
+        agentName: "Kalshi Bot",
+        action: "4 bugs fixed + log-normal model deployed — DRY_RUN=true, monitoring for ≥0.6 confidence threshold",
+      },
+      {
+        timestamp: now - 1000 * 60 * 90,
+        project: "Heterodox News",
+        agentName: "Axiom",
+        action: "Heterodox News site built — Next.js app, 44 sources, left/right/center coverage. Awaiting Vercel deploy",
+      },
+      {
+        timestamp: now - 1000 * 60 * 120,
+        project: "YouTube Consulting",
+        agentName: "Axiom",
+        action: "Shane LinkedIn lead: diagnostic offer sent — $2K diagnostic + retainer, awaiting reply",
+      },
+      {
+        timestamp: now - 1000 * 60 * 180,
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Wired 4 cron jobs: 07:00 briefing, 08:30 standup, 21:00 review, Sunday 08:00 weekly",
+      },
+      {
+        timestamp: now - 1000 * 60 * 210,
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Created SESSION-STATE.md + working-buffer.md — session state management established",
+      },
+      {
+        timestamp: now - 1000 * 60 * 240,
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Updated SOUL.md + AGENTS.md — chain of command and daily rhythm documented",
+      },
+      {
+        timestamp: now - 1000 * 60 * 270,
+        project: "Clawdraft",
+        agentName: "ContentGen",
+        action: "ContentGen LIVE — Sunday 8pm delivery cadence confirmed, awaiting first paying customer",
+      },
+      {
+        timestamp: now - 1000 * 60 * 300,
+        project: "Clawdraft",
+        agentName: "Onboarding",
+        action: "Clawdraft Onboarding agent built — pending first customer signup after Paddle approval",
+      },
+      {
+        timestamp: now - 86400000 * 2,
+        project: "Clawdraft",
+        agentName: "Axiom",
+        action: "Clawdraft site live at clawdraft.app — $297 DIY / $497 DFY pricing locked, Paddle approval submitted",
+      },
+      {
+        timestamp: now - 86400000 * 3,
+        project: "Kalshi Bot",
+        agentName: "Kalshi Bot",
+        action: "Kalshi bot deployed to Hetzner VPS 178.156.136.147 — DRY_RUN=true, 5 strategies active",
+      },
+      {
+        timestamp: now - 86400000 * 5,
+        project: "Heterodox Media",
+        agentName: "Axiom",
+        action: "Pitch docs ready — co-founders Tyler + Emerald Robinson, $950K SAFE at $5.5M pre-money",
+      },
+    ];
+    for (const log of logs) {
+      await ctx.db.insert("logs", log);
+    }
+  },
+});
+
 export const seed = mutation({
   args: {},
   handler: async (ctx) => {
@@ -36,77 +125,79 @@ export const seed = mutation({
 
     const now = Date.now();
     const logs = [
+      // ── TODAY: 2026-03-03 ────────────────────────────────────────────────────
       {
-        timestamp: now - 1000 * 60 * 2,
-        project: "Clawdraft",
-        agentName: "Scraper",
-        action: "Completed competitor analysis — scraped 50 tools, exported pricing matrix to memory",
+        timestamp: now - 1000 * 60 * 5,
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Mission Control dashboard updated — tasks, agents, projects, and logs synced to 2026-03-03",
       },
       {
-        timestamp: now - 1000 * 60 * 8,
-        project: "Ecom System",
-        agentName: "MarketResearch",
-        action: "Shortlisted 3 products in pet accessories niche — avg margin 68%, competition score 22",
-      },
-      {
-        timestamp: now - 1000 * 60 * 15,
-        project: "Clawdraft",
-        agentName: "ContentGen",
-        action: "Generated first draft of landing page copy — headline and 3 sections complete",
-      },
-      {
-        timestamp: now - 1000 * 60 * 32,
-        project: "Ecom System",
-        agentName: "Supplier",
-        action: "Sent inquiry to 8 Alibaba suppliers — waiting on MOQ and sample pricing responses",
-      },
-      {
-        timestamp: now - 1000 * 60 * 45,
-        project: "Clawdraft",
-        agentName: "Delivery",
-        action: "Stripe webhook configured — purchase event now triggers product access grant",
-      },
-      {
-        timestamp: now - 1000 * 60 * 60,
-        project: "Ecom System",
-        agentName: "Pricing",
-        action: "Initialized repricing engine — monitoring 12 competitor ASINs across 3 categories",
+        timestamp: now - 1000 * 60 * 30,
+        project: "Kalshi Bot",
+        agentName: "Kalshi Bot",
+        action: "4 bugs fixed + log-normal model deployed — DRY_RUN=true, monitoring for ≥0.6 confidence threshold",
       },
       {
         timestamp: now - 1000 * 60 * 90,
-        project: "Clawdraft",
-        agentName: "Scraper",
-        action: "Scraped Google Trends data for 'AI content tools' — 340% YoY growth confirmed",
+        project: "Heterodox News",
+        agentName: "Axiom",
+        action: "Heterodox News site built — Next.js app, 44 sources, left/right/center coverage. Awaiting Vercel deploy",
       },
       {
         timestamp: now - 1000 * 60 * 120,
-        project: "Ecom System",
-        agentName: "MarketResearch",
-        action: "Expanded research to home organization niche — 47 products analyzed, 5 flagged for review",
+        project: "YouTube Consulting",
+        agentName: "Axiom",
+        action: "Shane LinkedIn lead: diagnostic offer sent — $2K diagnostic + retainer, awaiting reply",
       },
       {
         timestamp: now - 1000 * 60 * 180,
-        project: "Clawdraft",
-        agentName: "ContentGen",
-        action: "Completed welcome email sequence — 5 emails, 7-day drip, 62% open rate projected",
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Wired 4 cron jobs: 07:00 briefing, 08:30 standup, 21:00 review, Sunday 08:00 weekly",
+      },
+      {
+        timestamp: now - 1000 * 60 * 210,
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Created SESSION-STATE.md + working-buffer.md — session state management established",
       },
       {
         timestamp: now - 1000 * 60 * 240,
-        project: "Ecom System",
-        agentName: "CustomerService",
-        action: "Customer service protocols loaded — 24 response templates ready, escalation rules configured",
+        project: "NEXUS",
+        agentName: "Axiom",
+        action: "Updated SOUL.md + AGENTS.md — chain of command and daily rhythm documented",
       },
       {
-        timestamp: now - 86400000 * 1,
+        timestamp: now - 1000 * 60 * 270,
+        project: "Clawdraft",
+        agentName: "ContentGen",
+        action: "ContentGen LIVE — Sunday 8pm delivery cadence confirmed, awaiting first paying customer",
+      },
+      {
+        timestamp: now - 1000 * 60 * 300,
         project: "Clawdraft",
         agentName: "Onboarding",
-        action: "Drafted 3-step onboarding checklist — profile setup, first content creation, sharing workflow",
+        action: "Clawdraft Onboarding agent built — pending first customer signup after Paddle approval",
+      },
+      // ── PRIOR SESSION LOGS ────────────────────────────────────────────────────
+      {
+        timestamp: now - 86400000 * 2,
+        project: "Clawdraft",
+        agentName: "Axiom",
+        action: "Clawdraft site live at clawdraft.app — $297 DIY / $497 DFY pricing locked, Paddle approval submitted",
       },
       {
-        timestamp: now - 86400000 * 1 - 3600000,
-        project: "Ecom System",
-        agentName: "Supplier",
-        action: "Vetted 3 suppliers — 1 approved (GreenLeaf Co.), 2 rejected (quality concerns)",
+        timestamp: now - 86400000 * 3,
+        project: "Kalshi Bot",
+        agentName: "Kalshi Bot",
+        action: "Kalshi bot deployed to Hetzner VPS 178.156.136.147 — DRY_RUN=true, 5 strategies active",
+      },
+      {
+        timestamp: now - 86400000 * 5,
+        project: "Heterodox Media",
+        agentName: "Axiom",
+        action: "Pitch docs ready — co-founders Tyler + Emerald Robinson, $950K SAFE at $5.5M pre-money",
       },
     ];
 

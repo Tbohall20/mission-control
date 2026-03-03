@@ -36,42 +36,55 @@ export const update = mutation({
   },
 });
 
-// ─── All active projects (as of 2026-02-25) ───────────────────────────────────
+// ─── All active projects (as of 2026-03-03) ───────────────────────────────────
 const ALL_PRODUCTS = [
   // ── CLAWDRAFT ──────────────────────────────────────────────────────────────
   {
     name: "Clawdraft",
     status: "Launched" as const,
-    pricing: "$297 DIY / $497 DFY (founder $297 first 10 DFY)",
+    pricing: "$297 DIY / $497 DFY",
     valueProp:
-      "Done-for-you weekly content engine. One topic. Four formats — X thread, newsletter, LinkedIn post, YouTube script — delivered to your WhatsApp every Sunday. Powered by AI, customized to your voice.",
+      "Done-for-you weekly content engine. One topic. Four formats — X thread, newsletter, LinkedIn post, YouTube script — delivered to your WhatsApp every Sunday. Powered by AI, customized to your voice. LIVE — awaiting Paddle approval to activate checkout.",
     liveLink: "https://clawdraft.app",
     signups: 0,
     revenue: 0,
     slotsRemaining: 10,
     phase: "Soft Launch" as const,
   },
-  // ── ECOM SYSTEM ───────────────────────────────────────────────────────────
+  // ── HETERODOX NEWS ────────────────────────────────────────────────────────
   {
-    name: "Ecom System",
+    name: "Heterodox News",
     status: "Building" as const,
-    pricing: "Internal — margin capture model",
+    pricing: "Free (ad-supported / membership)",
     valueProp:
-      "Fully autonomous dropshipping operation. 6 AI agents handle product scouting, supplier sourcing, listing creation, dynamic pricing, ad creative, and customer service. Built on Shopify + CJ Dropshipping + OpenClaw.",
+      "AI-powered news aggregator covering 44 sources across left, right, and center. Next.js site built and ready. Needs Vercel deploy + custom domain to go live.",
     liveLink: undefined,
     signups: 0,
     revenue: 0,
-    slotsRemaining: 0,
-    phase: "Building" as const,
+    slotsRemaining: undefined,
+    phase: "Soft Launch" as const,
   },
   // ── YOUTUBE CONSULTING ────────────────────────────────────────────────────
   {
     name: "YouTube Consulting",
     status: "Launched" as const,
-    pricing: "Diagnostic $1.5K–$2.5K → Sprint $4K–$6K → Retainer $5K–$10K/mo",
+    pricing: "$2K diagnostic + retainer",
     valueProp:
-      "EP + YouTube strategist with 1B+ views and 5M+ subscribers across channels. Helps podcast hosts and long-form creators dramatically improve performance through packaging, positioning, and distribution strategy.",
+      "EP + YouTube strategist with 1B+ views and 5M+ subscribers across channels. Helps podcast hosts and long-form creators dramatically improve performance through packaging, positioning, and distribution strategy. Shane lead active — diagnostic offer sent.",
     liveLink: "https://linkedin.com/in/tylerbohall",
+    signups: 0,
+    revenue: 0,
+    slotsRemaining: undefined,
+    phase: "Live" as const,
+  },
+  // ── KALSHI BOT ────────────────────────────────────────────────────────────
+  {
+    name: "Kalshi Bot",
+    status: "Launched" as const,
+    pricing: "Internal — live trading (DRY_RUN=true)",
+    valueProp:
+      "Prediction market trading bot running 5 strategies with log-normal model. LIVE on Hetzner VPS 178.156.136.147. DRY_RUN=true — will flip to live once Claude approves ≥0.6 confidence threshold. 4 bugs fixed + log-normal model deployed 2026-03-03.",
+    liveLink: undefined,
     signups: 0,
     revenue: 0,
     slotsRemaining: undefined,
@@ -83,38 +96,38 @@ const ALL_PRODUCTS = [
     status: "Building" as const,
     pricing: "Sponsorships → Memberships → Events → Licensing",
     valueProp:
-      "Sovereign media institution for intellectually homeless conservatives. 5 hosts, 780 episodes/year, remote-first. $950K raise at $5.5M pre-money. Projected breakeven Month 9, $6M revenue by Year 3.",
+      "Sovereign media institution for intellectually homeless conservatives. 5 hosts, 780 episodes/year, remote-first. $950K raise at $5.5M pre-money. Co-founders: Tyler + Emerald Robinson. Pitch docs ready. OFFLINE — awaiting funding.",
     liveLink: undefined,
     signups: 0,
     revenue: 0,
     slotsRemaining: undefined,
     phase: "Building" as const,
   },
-  // ── CRYPTO BOT ────────────────────────────────────────────────────────────
+  // ── NEXUS MISSION CONTROL ────────────────────────────────────────────────
   {
-    name: "Crypto Bot",
+    name: "NEXUS Mission Control",
     status: "Launched" as const,
-    pricing: "Internal — paper trading",
+    pricing: "Internal — command dashboard",
     valueProp:
-      "EMA200 momentum bot — all 5 conditions required before entry. Running on paper with 2 open BTC longs. 100% win rate on 1 closed trade. Stack: Python on desktop, manual start required.",
-    liveLink: undefined,
+      "Real-time mission control dashboard for all active projects and agents. Built with Next.js + Convex. LIVE at mission-control-six-mocha.vercel.app. Tracks tasks, agents, logs, and launch status across all projects.",
+    liveLink: "https://mission-control-six-mocha.vercel.app",
     signups: 0,
     revenue: 0,
     slotsRemaining: undefined,
     phase: "Live" as const,
   },
-  // ── STOCK BOT ─────────────────────────────────────────────────────────────
+  // ── ECOM SYSTEM ───────────────────────────────────────────────────────────
   {
-    name: "Stock Bot",
-    status: "Launched" as const,
-    pricing: "Internal — paper trading (~$100K Alpaca)",
+    name: "Ecom System",
+    status: "Building" as const,
+    pricing: "Internal — margin capture model",
     valueProp:
-      "200-week MA value investing system (Munger framework). Auto-executes conviction 7+ below 200W MA. 75 stocks on watchlist. SPGI closest to buy at -2.42% below MA. Scheduled Monday 8:30am via Task Scheduler.",
+      "Fully autonomous dropshipping operation. 6 AI agents handle product scouting, supplier sourcing, listing creation, dynamic pricing, ad creative, and customer service. Architecture done — not started. Fulfillment agent is first to build.",
     liveLink: undefined,
     signups: 0,
     revenue: 0,
-    slotsRemaining: undefined,
-    phase: "Live" as const,
+    slotsRemaining: 0,
+    phase: "Building" as const,
   },
   // ── HARVESTHUB ────────────────────────────────────────────────────────────
   {
@@ -122,7 +135,7 @@ const ALL_PRODUCTS = [
     status: "Idea" as const,
     pricing: "12% commission + $10–50/mo vendor subscription",
     valueProp:
-      "Florida-first online marketplace connecting cottage food producers, small farms, and artisans directly with consumers. Etsy meets farmers market meets subscription box. Built natively around Florida cottage food law (§ 500.80).",
+      "Florida-first online marketplace connecting cottage food producers, small farms, and artisans directly with consumers. BACKGROUND — no spend until Clawdraft closes first sale.",
     liveLink: undefined,
     signups: 0,
     revenue: 0,

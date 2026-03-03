@@ -7,7 +7,9 @@ import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
 import SeedInitializer from "@/components/SeedInitializer";
 
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+const convex = new ConvexReactClient(
+  process.env.NEXT_PUBLIC_CONVEX_URL || "https://superb-yak-348.convex.cloud"
+);
 
 export default function RootLayout({
   children,

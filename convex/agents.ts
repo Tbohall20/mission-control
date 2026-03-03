@@ -31,6 +31,158 @@ export const updateStatus = mutation({
   },
 });
 
+// ─── Current team / agents (as of 2026-03-03) ────────────────────────────────
+const CURRENT_AGENTS = [
+  // ── COMMAND ─────────────────────────────────────────────────────────────────
+  {
+    name: "Axiom",
+    role: "Master Agent (Command)",
+    project: "NEXUS",
+    status: "Active" as const,
+    responsibilities: [
+      "Orchestrate all sub-agents and projects",
+      "Maintain session state and memory",
+      "Execute Tyler's directives",
+      "Consolidate all output before Tyler sees it",
+    ],
+    currentActivity: "Mission Control update + daily operations",
+  },
+  // ── KALSHI BOT ───────────────────────────────────────────────────────────────
+  {
+    name: "Kalshi Bot",
+    role: "Prediction Market Trader",
+    project: "Kalshi Bot",
+    status: "Active" as const,
+    responsibilities: [
+      "Scan Kalshi markets for edge opportunities",
+      "Run 5 trading strategies with log-normal model",
+      "Execute trades when confidence ≥ 0.6 (DRY_RUN=true currently)",
+      "Log all trade decisions to Hetzner VPS",
+    ],
+    currentActivity: "LIVE on Hetzner VPS 178.156.136.147, DRY_RUN=true — awaiting confidence threshold",
+  },
+  // ── CLAWDRAFT AGENTS ─────────────────────────────────────────────────────────
+  {
+    name: "ContentGen",
+    role: "Content Generator",
+    project: "Clawdraft",
+    status: "Active" as const,
+    responsibilities: [
+      "Generate X threads, newsletters, LinkedIn posts, YouTube scripts",
+      "Apply customer brand voice profile to all outputs",
+      "Format and package weekly content",
+      "Deliver Sunday 8pm via WhatsApp",
+    ],
+    currentActivity: "LIVE — Sunday 8pm delivery active",
+  },
+  {
+    name: "Onboarding",
+    role: "Customer Onboarding",
+    project: "Clawdraft",
+    status: "Building" as const,
+    responsibilities: [
+      "Process new customer brand voice questionnaires",
+      "Build and store brand voice profiles in Convex",
+      "Trigger ContentGen with first content brief",
+      "Send welcome sequence on completion",
+    ],
+    currentActivity: "BUILT — pending first customer",
+  },
+  // ── HETERODOX NEWS BOT ───────────────────────────────────────────────────────
+  {
+    name: "Heterodox News Bot",
+    role: "News Aggregator",
+    project: "Heterodox News",
+    status: "Building" as const,
+    responsibilities: [
+      "Aggregate news from 44 sources across left/right/center",
+      "Categorize and score articles by bias",
+      "Feed content to Heterodox News Next.js site",
+      "Update feed on scheduled intervals",
+    ],
+    currentActivity: "BUILT — pending Vercel deploy",
+  },
+  // ── ECOM AGENTS (PLANNED) ────────────────────────────────────────────────────
+  {
+    name: "Fulfillment Agent",
+    role: "Order Fulfillment",
+    project: "Ecom System",
+    status: "Building" as const,
+    responsibilities: [
+      "Process incoming orders automatically",
+      "Route orders to CJ Dropshipping",
+      "Track fulfillment status",
+      "Handle exceptions and delays",
+    ],
+    currentActivity: "PLANNED — first agent to build",
+  },
+  {
+    name: "Product Scout",
+    role: "Market Researcher",
+    project: "Ecom System",
+    status: "Building" as const,
+    responsibilities: [
+      "Scan TikTok trending products and Amazon BSR",
+      "Score products by margin and competition",
+      "Feed shortlist to Supplier agent",
+      "Archive research history",
+    ],
+    currentActivity: "PLANNED — not started",
+  },
+  {
+    name: "Store Manager",
+    role: "Listing Creator",
+    project: "Ecom System",
+    status: "Building" as const,
+    responsibilities: [
+      "Generate SEO-optimized Shopify product listings",
+      "Source and format product images",
+      "Publish listings to Shopify store",
+      "Monitor listing performance",
+    ],
+    currentActivity: "PLANNED — not started",
+  },
+  {
+    name: "Pricing Engine",
+    role: "Dynamic Pricing",
+    project: "Ecom System",
+    status: "Building" as const,
+    responsibilities: [
+      "Monitor competitor pricing in real-time",
+      "Implement dynamic repricing rules",
+      "Protect margin thresholds automatically",
+      "Alert on pricing anomalies",
+    ],
+    currentActivity: "PLANNED — not started",
+  },
+  {
+    name: "Ad Creative",
+    role: "Ads Manager",
+    project: "Ecom System",
+    status: "Building" as const,
+    responsibilities: [
+      "Generate ad copy via Claude",
+      "Create ad images via Flux/Replicate",
+      "Launch and manage ad campaigns",
+      "Monitor ROAS and scale winners",
+    ],
+    currentActivity: "PLANNED — not started",
+  },
+  {
+    name: "Ecom Support",
+    role: "Customer Service",
+    project: "Ecom System",
+    status: "Building" as const,
+    responsibilities: [
+      "Handle support tickets via Telegram",
+      "Process refunds and returns",
+      "Respond to reviews",
+      "Escalate complex issues to Tyler",
+    ],
+    currentActivity: "PLANNED — not started",
+  },
+];
+
 export const resetAndReseed = mutation({
   args: {},
   handler: async (ctx) => {
@@ -38,20 +190,7 @@ export const resetAndReseed = mutation({
     for (const agent of existing) {
       await ctx.db.delete(agent._id);
     }
-    // Re-run seed with corrected data
-    const agents = [
-      { name: "Scraper", role: "Reddit Trend Scraper", project: "Clawdraft", status: "Building" as const, responsibilities: ["Daily Reddit scrape at 6am","Score and rank trending topics","Feed top topic to ContentGen","Archive trend history"], currentActivity: "Not yet deployed" },
-      { name: "ContentGen", role: "Content Generator", project: "Clawdraft", status: "Building" as const, responsibilities: ["Generate X threads, newsletters, LinkedIn, YouTube scripts","Apply brand voice profile","Format and package content","Adapt weekly topic across 4 formats"], currentActivity: "Not yet deployed" },
-      { name: "Delivery", role: "WhatsApp Delivery", project: "Clawdraft", status: "Building" as const, responsibilities: ["Deliver weekly content via WhatsApp","Handle scheduling and timing","Manage delivery confirmations","Log all deliveries"], currentActivity: "Not yet deployed" },
-      { name: "Onboarding", role: "Customer Onboarding", project: "Clawdraft", status: "Building" as const, responsibilities: ["Process brand voice questionnaires","Build brand voice profiles","Trigger ContentGen with first brief","Send welcome sequence"], currentActivity: "Not yet deployed" },
-      { name: "MarketResearch", role: "Market Researcher", project: "Ecom System", status: "Building" as const, responsibilities: ["Scan trends and identify winning products","Analyze competition and margin potential","Score and rank products","Feed shortlist to Supplier"], currentActivity: "Not yet deployed" },
-      { name: "Supplier", role: "Supplier Sourcer", project: "Ecom System", status: "Building" as const, responsibilities: ["Source products via CJ Dropshipping","Compare pricing and MOQs","Verify supplier reliability","Pass approved SKUs to Listing"], currentActivity: "Not yet deployed" },
-      { name: "Listing", role: "Listing Creator", project: "Ecom System", status: "Building" as const, responsibilities: ["Generate SEO-optimized Shopify listings","Write titles and descriptions","Source product images","Publish listings to Shopify"], currentActivity: "Not yet deployed" },
-      { name: "Pricing", role: "Pricing Engine", project: "Ecom System", status: "Building" as const, responsibilities: ["Monitor competitor pricing","Implement dynamic repricing","Protect margin thresholds","Alert on pricing anomalies"], currentActivity: "Not yet deployed" },
-      { name: "Ads", role: "Ads Manager", project: "Ecom System", status: "Building" as const, responsibilities: ["Launch and manage ad campaigns","Monitor ROAS and kill underperformers","Scale winning campaigns","Weekly performance reports"], currentActivity: "Not yet deployed" },
-      { name: "CustomerService", role: "Customer Service", project: "Ecom System", status: "Building" as const, responsibilities: ["Handle support via Telegram","Process refunds and returns","Respond to reviews","Escalate to Tyler when needed"], currentActivity: "Not yet deployed" },
-    ];
-    for (const agent of agents) {
+    for (const agent of CURRENT_AGENTS) {
       await ctx.db.insert("agents", agent);
     }
   },
@@ -62,143 +201,7 @@ export const seed = mutation({
   handler: async (ctx) => {
     const existing = await ctx.db.query("agents").collect();
     if (existing.length > 0) return;
-
-    const agents = [
-      // CLAWDRAFT AGENTS
-      {
-        name: "Scraper",
-        role: "Reddit Trend Scraper",
-        project: "Clawdraft",
-        status: "Building" as const,
-        responsibilities: [
-          "Daily Reddit scrape at 6am across target subreddits",
-          "Score and rank trending topics by engagement",
-          "Feed top topic to ContentGen each week",
-          "Archive trend history for pattern analysis",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "ContentGen",
-        role: "Content Generator",
-        project: "Clawdraft",
-        status: "Building" as const,
-        responsibilities: [
-          "Generate X threads, newsletters, LinkedIn posts, YouTube scripts",
-          "Apply customer brand voice profile to all outputs",
-          "Format and package content for delivery",
-          "Adapt weekly topic angle across 4 formats",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "Delivery",
-        role: "WhatsApp Delivery",
-        project: "Clawdraft",
-        status: "Building" as const,
-        responsibilities: [
-          "Deliver weekly content packages to customers via WhatsApp",
-          "Handle delivery scheduling and timing",
-          "Manage delivery confirmations and retries",
-          "Log all deliveries to Agent Logs",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "Onboarding",
-        role: "Customer Onboarding",
-        project: "Clawdraft",
-        status: "Building" as const,
-        responsibilities: [
-          "Process new customer brand voice questionnaires",
-          "Build and store brand voice profiles in Convex",
-          "Trigger ContentGen with first content brief",
-          "Send welcome sequence on completion",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      // ECOM AGENTS
-      {
-        name: "MarketResearch",
-        role: "Market Researcher",
-        project: "Ecom System",
-        status: "Building" as const,
-        responsibilities: [
-          "Scan trends and identify winning product opportunities",
-          "Analyze competition, demand, and margin potential",
-          "Score and rank products for the pipeline",
-          "Feed shortlist to Supplier agent",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "Supplier",
-        role: "Supplier Sourcer",
-        project: "Ecom System",
-        status: "Building" as const,
-        responsibilities: [
-          "Source products via CJ Dropshipping",
-          "Compare pricing, MOQs, and shipping times",
-          "Verify supplier reliability scores",
-          "Pass approved SKUs to Listing agent",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "Listing",
-        role: "Listing Creator",
-        project: "Ecom System",
-        status: "Building" as const,
-        responsibilities: [
-          "Generate SEO-optimized Shopify product listings",
-          "Write titles, descriptions, and bullet points",
-          "Source and format product images",
-          "Publish listings to Shopify store",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "Pricing",
-        role: "Pricing Engine",
-        project: "Ecom System",
-        status: "Building" as const,
-        responsibilities: [
-          "Monitor competitor pricing in real-time",
-          "Implement dynamic repricing rules",
-          "Protect margin thresholds automatically",
-          "Alert on pricing anomalies via Telegram",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "Ads",
-        role: "Ads Manager",
-        project: "Ecom System",
-        status: "Building" as const,
-        responsibilities: [
-          "Launch and manage ad campaigns",
-          "Monitor ROAS and kill underperformers",
-          "Scale winning campaigns automatically",
-          "Report weekly ad performance summary",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-      {
-        name: "CustomerService",
-        role: "Customer Service",
-        project: "Ecom System",
-        status: "Building" as const,
-        responsibilities: [
-          "Handle support tickets via Telegram",
-          "Process refunds and returns",
-          "Respond to reviews",
-          "Escalate complex issues to Tyler",
-        ],
-        currentActivity: "Not yet deployed",
-      },
-    ];
-
-    for (const agent of agents) {
+    for (const agent of CURRENT_AGENTS) {
       await ctx.db.insert("agents", agent);
     }
   },
