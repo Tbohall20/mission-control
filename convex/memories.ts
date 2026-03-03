@@ -39,6 +39,24 @@ export const create = mutation({
   },
 });
 
+export const update = mutation({
+  args: {
+    id: v.id("memories"),
+    title: v.optional(v.string()),
+    summary: v.optional(v.string()),
+    tags: v.optional(v.array(v.string())),
+    project: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const { id, ...fields } = args;
+    const patch = Object.fromEntries(
+      Object.entries(fields).filter(([, v]) => v !== undefined)
+    );
+    await ctx.db.patch(id, patch);
+    return await ctx.db.get(id);
+  },
+});
+
 export const seed = mutation({
   args: {},
   handler: async (ctx) => {
