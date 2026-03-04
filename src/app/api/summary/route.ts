@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
 
-const convex = new ConvexHttpClient(
-  process.env.NEXT_PUBLIC_CONVEX_URL || "https://superb-yak-348.convex.cloud"
-);
+// Hardcoded prod URL — env var had trailing newline corruption, bypassed entirely
+const CONVEX_URL = "https://superb-yak-348.convex.cloud";
+const convex = new ConvexHttpClient(CONVEX_URL);
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -26,6 +26,8 @@ export async function GET() {
         generated_at: new Date().toISOString(),
         source: "Mission Control — NEXUS",
         url: "https://mission-control-six-mocha.vercel.app",
+        convex_url: CONVEX_URL,
+        task_count_live: tasks.length,
       },
       tasks: {
         total: tasks.length,
