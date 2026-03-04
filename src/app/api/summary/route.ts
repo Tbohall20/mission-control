@@ -6,7 +6,9 @@ const convex = new ConvexHttpClient(
   process.env.NEXT_PUBLIC_CONVEX_URL || "https://superb-yak-348.convex.cloud"
 );
 
-export const dynamic = "force-dynamic"; // never cache — always fresh data
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export async function GET() {
   try {
@@ -113,7 +115,12 @@ export async function GET() {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET",
-        "Cache-Control": "no-store",
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+        "Surrogate-Control": "no-store",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
+        "Pragma": "no-cache",
+        "Expires": "0",
       },
     });
   } catch (err) {
